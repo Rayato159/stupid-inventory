@@ -59,6 +59,7 @@ func (s *httpServer) gracefullyShutdown() {
 
 func (s *httpServer) StartUserServer() {
 	userController := &httpControllers.UserHttpController{
+		Cfg: s.cfg,
 		UserRepository: &repositories.UserRepository{
 			Client: s.dbClient,
 		},
@@ -72,9 +73,14 @@ func (s *httpServer) StartUserServer() {
 }
 
 func (s *httpServer) StartItemServer() {
-	s.app.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	itemController := &httpControllers.ItemHttpController{
+		ItemRepository: &repositories.ItemRepository{
+			Client: s.dbClient,
+		},
+	}
+
+	s.app.GET("/item", itemController.FindItems)
+	s.app.GET("/item/:item_id", itemController.FindOneItem)
 
 	// Start server
 	go s.listen()

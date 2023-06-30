@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	App *App
-	Db  *Db
+	App  *App
+	Db   *Db
+	Grpc *Grpc
 }
 
 type App struct {
@@ -19,6 +20,10 @@ type App struct {
 
 type Db struct {
 	Url string
+}
+
+type Grpc struct {
+	ItemAppUrl string
 }
 
 func NewConfig(path string) *Config {
@@ -33,6 +38,9 @@ func NewConfig(path string) *Config {
 		},
 		Db: &Db{
 			Url: os.Getenv("DB_URL"),
+		},
+		Grpc: &Grpc{
+			ItemAppUrl: os.Getenv("GRPC_ITEM_APP_URL"),
 		},
 	}
 }

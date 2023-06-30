@@ -7,14 +7,15 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/Rayato159/stupid-inventory/src/config"
+	"github.com/Rayato159/stupid-inventory/src/controllers/grpcControllers"
 	pbItem "github.com/Rayato159/stupid-inventory/src/proto/item"
+	"github.com/Rayato159/stupid-inventory/src/repositories"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type grpcServer struct {
 	cfg      *config.Config
 	dbClient *mongo.Client
-	pbItem.UnimplementedItemServiceServer
 }
 
 func NewGrpcServer(cfg *config.Config, dbClient *mongo.Client) *grpcServer {
@@ -25,7 +26,7 @@ func NewGrpcServer(cfg *config.Config, dbClient *mongo.Client) *grpcServer {
 }
 
 func (s *grpcServer) StartItemServer() {
-	var opts []grpc.ServerOption
+	opts := make([]grpc.ServerOption, 0)
 	gs := grpc.NewServer(opts...)
 
 	log.Printf("%s server is starting on %s", s.cfg.App.AppName, s.cfg.App.Url)
@@ -34,8 +35,13 @@ func (s *grpcServer) StartItemServer() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// pbItem.RegisterItemServiceServer(
-	// 	grpcServer,
-	// )
+	pbItem.RegisterItemServiceServer(
+		gs,
+		&grpcControllers.ItemGrpcController{
+			ItemRepository: &repositories.ItemRepository{
+				Client: s.dbClient,
+			},
+		},
+	)
 	gs.Serve(lis)
 }

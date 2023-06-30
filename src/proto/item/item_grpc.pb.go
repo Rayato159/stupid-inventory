@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ItemService_FindOneItem_FullMethodName = "/ItemService/FindOneItem"
+	ItemService_FindItems_FullMethodName = "/ItemService/FindItems"
 )
 
 // ItemServiceClient is the client API for ItemService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ItemServiceClient interface {
-	FindOneItem(ctx context.Context, opts ...grpc.CallOption) (ItemService_FindOneItemClient, error)
+	FindItems(ctx context.Context, opts ...grpc.CallOption) (ItemService_FindItemsClient, error)
 }
 
 type itemServiceClient struct {
@@ -37,30 +37,30 @@ func NewItemServiceClient(cc grpc.ClientConnInterface) ItemServiceClient {
 	return &itemServiceClient{cc}
 }
 
-func (c *itemServiceClient) FindOneItem(ctx context.Context, opts ...grpc.CallOption) (ItemService_FindOneItemClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ItemService_ServiceDesc.Streams[0], ItemService_FindOneItem_FullMethodName, opts...)
+func (c *itemServiceClient) FindItems(ctx context.Context, opts ...grpc.CallOption) (ItemService_FindItemsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ItemService_ServiceDesc.Streams[0], ItemService_FindItems_FullMethodName, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &itemServiceFindOneItemClient{stream}
+	x := &itemServiceFindItemsClient{stream}
 	return x, nil
 }
 
-type ItemService_FindOneItemClient interface {
+type ItemService_FindItemsClient interface {
 	Send(*ItemReq) error
 	CloseAndRecv() (*ItemArr, error)
 	grpc.ClientStream
 }
 
-type itemServiceFindOneItemClient struct {
+type itemServiceFindItemsClient struct {
 	grpc.ClientStream
 }
 
-func (x *itemServiceFindOneItemClient) Send(m *ItemReq) error {
+func (x *itemServiceFindItemsClient) Send(m *ItemReq) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *itemServiceFindOneItemClient) CloseAndRecv() (*ItemArr, error) {
+func (x *itemServiceFindItemsClient) CloseAndRecv() (*ItemArr, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (x *itemServiceFindOneItemClient) CloseAndRecv() (*ItemArr, error) {
 // All implementations must embed UnimplementedItemServiceServer
 // for forward compatibility
 type ItemServiceServer interface {
-	FindOneItem(ItemService_FindOneItemServer) error
+	FindItems(ItemService_FindItemsServer) error
 	mustEmbedUnimplementedItemServiceServer()
 }
 
@@ -83,8 +83,8 @@ type ItemServiceServer interface {
 type UnimplementedItemServiceServer struct {
 }
 
-func (UnimplementedItemServiceServer) FindOneItem(ItemService_FindOneItemServer) error {
-	return status.Errorf(codes.Unimplemented, "method FindOneItem not implemented")
+func (UnimplementedItemServiceServer) FindItems(ItemService_FindItemsServer) error {
+	return status.Errorf(codes.Unimplemented, "method FindItems not implemented")
 }
 func (UnimplementedItemServiceServer) mustEmbedUnimplementedItemServiceServer() {}
 
@@ -99,25 +99,25 @@ func RegisterItemServiceServer(s grpc.ServiceRegistrar, srv ItemServiceServer) {
 	s.RegisterService(&ItemService_ServiceDesc, srv)
 }
 
-func _ItemService_FindOneItem_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ItemServiceServer).FindOneItem(&itemServiceFindOneItemServer{stream})
+func _ItemService_FindItems_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ItemServiceServer).FindItems(&itemServiceFindItemsServer{stream})
 }
 
-type ItemService_FindOneItemServer interface {
+type ItemService_FindItemsServer interface {
 	SendAndClose(*ItemArr) error
 	Recv() (*ItemReq, error)
 	grpc.ServerStream
 }
 
-type itemServiceFindOneItemServer struct {
+type itemServiceFindItemsServer struct {
 	grpc.ServerStream
 }
 
-func (x *itemServiceFindOneItemServer) SendAndClose(m *ItemArr) error {
+func (x *itemServiceFindItemsServer) SendAndClose(m *ItemArr) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *itemServiceFindOneItemServer) Recv() (*ItemReq, error) {
+func (x *itemServiceFindItemsServer) Recv() (*ItemReq, error) {
 	m := new(ItemReq)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -134,8 +134,8 @@ var ItemService_ServiceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "FindOneItem",
-			Handler:       _ItemService_FindOneItem_Handler,
+			StreamName:    "FindItems",
+			Handler:       _ItemService_FindItems_Handler,
 			ClientStreams: true,
 		},
 	},

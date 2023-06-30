@@ -18,5 +18,5 @@ message ItemArr {
 }
 
 service ItemService {
-    rpc FindOneItem(stream ItemReq) returns (ItemArr) {}
+    rpc FindItems(stream ItemReq) returns (ItemArr) {}
 }
