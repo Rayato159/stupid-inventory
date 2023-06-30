@@ -1,0 +1,14 @@
+.git
+.gitignore
+
+apikey.txt
+
+LICENSE
+README.md
+
+.air*
+
+*_test.go
+
+tests/
+screenshots/

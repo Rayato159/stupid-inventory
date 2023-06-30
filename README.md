@@ -1,0 +1,1 @@
+<h1>Stupid Inventory App</h1>
