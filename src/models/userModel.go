@@ -5,7 +5,7 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type User struct {
 	ObjectId primitive.ObjectID `bson:"_id,omitempty" json:"_id"`
 	Username string             `bson:"username" json:"username"`
-	Items    []Item             `json:"items"`
+	Items    []Item             `bson:"items,omitempty" json:"items"`
 }
 
 // Many to many -> users *-* items

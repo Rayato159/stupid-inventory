@@ -12,15 +12,15 @@ import (
 )
 
 type grpcServer struct {
-	cfg *config.Config
-	db  *mongo.Client
+	cfg      *config.Config
+	dbClient *mongo.Client
 	pbItem.UnimplementedItemServiceServer
 }
 
-func NewGrpcServer(cfg *config.Config, db *mongo.Client) *grpcServer {
+func NewGrpcServer(cfg *config.Config, dbClient *mongo.Client) *grpcServer {
 	return &grpcServer{
-		cfg: cfg,
-		db:  db,
+		cfg:      cfg,
+		dbClient: dbClient,
 	}
 }
 

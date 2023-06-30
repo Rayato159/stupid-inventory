@@ -9,6 +9,9 @@ import (
 	"time"
 
 	"github.com/Rayato159/stupid-inventory/src/config"
+	"github.com/Rayato159/stupid-inventory/src/controllers/httpControllers"
+	"github.com/Rayato159/stupid-inventory/src/repositories"
+
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -19,16 +22,16 @@ type IHttpServer interface {
 }
 
 type httpServer struct {
-	app *echo.Echo
-	cfg *config.Config
-	db  *mongo.Client
+	app      *echo.Echo
+	cfg      *config.Config
+	dbClient *mongo.Client
 }
 
-func NewHttpServer(cfg *config.Config, db *mongo.Client) IHttpServer {
+func NewHttpServer(cfg *config.Config, dbClient *mongo.Client) IHttpServer {
 	return &httpServer{
-		app: echo.New(),
-		cfg: cfg,
-		db:  db,
+		app:      echo.New(),
+		cfg:      cfg,
+		dbClient: dbClient,
 	}
 }
 
@@ -55,9 +58,13 @@ func (s *httpServer) gracefullyShutdown() {
 }
 
 func (s *httpServer) StartUserServer() {
-	s.app.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	userController := &httpControllers.UserHttpController{
+		UserRepository: &repositories.UserRepository{
+			Client: s.dbClient,
+		},
+	}
+
+	s.app.GET("/user/:user_id", userController.FindOneUser)
 
 	// Start server
 	go s.listen()

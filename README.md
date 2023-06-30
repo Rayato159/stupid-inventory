@@ -135,7 +135,7 @@ db.users_items.insertMany([
   {
     user_id: ObjectId("649f14208624cc23d3a6e7c7"),
     item_id: ObjectId("649f133fce9ca44af3239caa"),
-  },
+  }
 ])
 ```
 
