@@ -27,6 +27,7 @@ func NewGrpcServer(cfg *config.Config, db *mongo.Client) *grpcServer {
 func (s *grpcServer) StartItemServer() {
 	var opts []grpc.ServerOption
 	gs := grpc.NewServer(opts...)
+
 	log.Printf("%s server is starting on %s", s.cfg.App.AppName, s.cfg.App.Url)
 	lis, err := net.Listen("tcp", s.cfg.App.Url)
 	if err != nil {
