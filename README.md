@@ -1,5 +1,8 @@
 <h1>Stupid Inventory App</h1>
 
+<h2>👌 Architecture</h2>
+<img src="./screenshots/arch.png">
+
 <h2>🍃 Run MongoDB on Docker</h2>
 
 ```bash
