@@ -47,6 +47,8 @@ func (s *httpServer) gracefullyShutdown() {
 	<-quit
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
+	log.Println("server is shutting down")
 	if err := s.app.Shutdown(ctx); err != nil {
 		s.app.Logger.Fatal(err)
 	}
