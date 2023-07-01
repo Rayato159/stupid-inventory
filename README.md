@@ -96,11 +96,11 @@ use user_db
 db.users.insertMany([
   {
     _id: ObjectId("649f14208624cc23d3a6e7c5"),
-    username: 'john_doe' },
+    username: 'john_doe'
   },
   {
     _id: ObjectId("649f14208624cc23d3a6e7c6"),
-    username: 'jane_smith' },
+    username: 'jane_smith'
   },
   {
     _id: ObjectId("649f14208624cc23d3a6e7c7"),
@@ -148,4 +148,10 @@ db.users_items.insertMany([
 protoc --go_out=. --go_opt=paths=source_relative \
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
     src/proto/item/item.proto
+```
+
+<h2>🐳 Start with docker-compose</h2>
+
+```bash
+docker compose up
 ```

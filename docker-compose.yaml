@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile.Http.User
     ports:
       - 3000:3000
+    depends_on:
+      - user_db
 
   item-http:
     build:
@@ -13,6 +15,8 @@ services:
       dockerfile: Dockerfile.Http.Item
     ports:
       - 4000:4000
+    depends_on:
+      - item_db
 
   item-grpc:
     build:
@@ -20,3 +24,21 @@ services:
       dockerfile: Dockerfile.Grpc.Item
     ports:
       - 4100:4100
+    depends_on:
+      - item_db
+
+  user_db:
+    image: mongo:latest
+    ports:
+      - 2000:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rayato159
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+
+  item_db:
+    image: mongo:latest
+    ports:
+      - 2001:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rayato159
+      - MONGO_INITDB_ROOT_PASSWORD=123456
