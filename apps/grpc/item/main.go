@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"github.com/Rayato159/stupid-inventory/pkg/db"
 	"github.com/Rayato159/stupid-inventory/src/config"
@@ -9,7 +10,12 @@ import (
 )
 
 func main() {
-	cfg := config.NewConfig("./.env.grpc.item")
+	cfg := config.NewConfig(func() string {
+		if len(os.Args) > 1 {
+			return os.Args[1]
+		}
+		return "../../../.env.grpc.item"
+	}())
 
 	dbClient := db.DBConn(cfg)
 	defer dbClient.Disconnect(context.Background())
