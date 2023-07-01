@@ -14,7 +14,7 @@ func main() {
 		if len(os.Args) > 1 {
 			return os.Args[1]
 		}
-		return "../../../.env.grpc.item"
+		return "./.env.grpc.item"
 	}())
 
 	dbClient := db.DBConn(cfg)

@@ -14,7 +14,7 @@ func main() {
 		if len(os.Args) > 1 {
 			return os.Args[1]
 		}
-		return "../../../.env.http.item"
+		return "./.env.http.item"
 	}())
 
 	dbClient := db.DBConn(cfg)
