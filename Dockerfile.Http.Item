@@ -1,0 +1,19 @@
+FROM golang:1.20-buster AS build
+
+WORKDIR /app
+
+COPY . ./
+RUN go mod download
+
+RUN CGO_ENABLED=0 go build -o /bin/app /app/apps/http/item/main.go
+
+## Deploy
+FROM debian:buster-slim
+RUN apt-get update && apt-get install -y ca-certificates
+
+COPY --from=build /bin/app /bin
+COPY .env.http.item /bin
+
+EXPOSE 4000
+
+CMD [ "/bin/app", "/bin/.env.http.item" ]
