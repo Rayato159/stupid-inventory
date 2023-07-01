@@ -7,10 +7,10 @@
 
 ```bash
 # start user_db container
-docker run --name user_db -e MONGO_INITDB_ROOT_USERNAME=rayato159 -e MONGO_INITDB_ROOT_PASSWORD=123456 -p 44444:27017 -d mongo
+docker run --name user_db -e MONGO_INITDB_ROOT_USERNAME=rayato159 -e MONGO_INITDB_ROOT_PASSWORD=123456 -p 2000:27017 -d mongo
 
 # start item_db container
-docker run --name item_db -e MONGO_INITDB_ROOT_USERNAME=rayato159 -e MONGO_INITDB_ROOT_PASSWORD=123456 -p 55555:27017 -d mongo
+docker run --name item_db -e MONGO_INITDB_ROOT_USERNAME=rayato159 -e MONGO_INITDB_ROOT_PASSWORD=123456 -p 2001:27017 -d mongo
 ```
 
 <h2>🔌 Connect to a database</h2>
@@ -83,7 +83,7 @@ db.items.insertMany([
     description: 'A staff imbued with restorative powers',
     damage: 10
   }
-])
+]);
 ```
 
 <h3>users</h3>
@@ -106,7 +106,7 @@ db.users.insertMany([
     _id: ObjectId("649f14208624cc23d3a6e7c7"),
     username: 'alex_miller'
   }
-])
+]);
 ```
 
 ```bash
@@ -139,7 +139,7 @@ db.users_items.insertMany([
     user_id: ObjectId("649f14208624cc23d3a6e7c7"),
     item_id: ObjectId("649f133fce9ca44af3239caa"),
   }
-])
+]);
 ```
 
 <h2>🌞 Generate proto file</h2>

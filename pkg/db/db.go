@@ -15,7 +15,7 @@ func DBConn(cfg *config.Config) *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
 	defer cancel()
 
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(cfg.Db.Url))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(cfg.Db.Url))
 	if err != nil {
 		log.Fatalf("connect to db -> %s failed: %v", cfg.Db.Url, err)
 	}
